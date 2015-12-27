@@ -1,5 +1,6 @@
 package ebill.rooms;
 
-public class Bedroom extends Room{
+
+public class BedRoom extends Room{
 
 }
