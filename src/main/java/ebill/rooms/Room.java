@@ -359,15 +359,15 @@ protected void switchOnOffDevice(Device device, JLabel jlabel){
 			jlabel.setText(OFF);
 			jlabel.setForeground(Color.GREEN);
 			device.setState(OFF);
-			endTime = System.currentTimeMillis();
+			device.setEndTime(System.currentTimeMillis());
 			System.out.println("End: "+endTime);
-			totalTime += (endTime-startTime);
+			device.setTotalTime(device.getTotalTime() + (device.getEndTime()-device.getStartTime()));
 			System.out.println("Total: "+totalTime);
 			//5min- 1Unit (1khW)
-			device.setWatts(String.valueOf(Long.parseLong(device.getWatts()==null?"0":device.getWatts())+((totalTime/10)/3)));
+			device.setWatts(String.valueOf(Long.parseLong(device.getWatts()==null?"0":device.getWatts())+((device.getTotalTime()/10)/3)));
 			System.out.println(device.getWatts());
 		}else{
-			startTime = System.currentTimeMillis();
+			device.setStartTime(System.currentTimeMillis());
 			System.out.println("start: "+startTime);
 			jlabel.setText(ON);
 			jlabel.setForeground(Color.RED);

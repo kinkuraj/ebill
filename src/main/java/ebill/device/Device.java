@@ -17,7 +17,37 @@ public class Device {
 	
 	private String watts;
 	
-	private Time time;
+	private long startTime;
+	
+	private long endTime;
+	
+	private long totalTime;
+	
+	
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+
+	public long getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
+	}
+
+	public long getTotalTime() {
+		return totalTime;
+	}
+
+	public void setTotalTime(long totalTime) {
+		this.totalTime = totalTime;
+	}
 
 	public String getState() {
 		return state;
@@ -35,16 +65,5 @@ public class Device {
 		this.watts = watts;
 	}
 
-	public Time getTime() {
-		return time;
-	}
-
-	public void setTime(Time time) {
-		this.time = time;
-	}
-
-	public void run(){
-		time = getTime();
-	}
 	
 }
