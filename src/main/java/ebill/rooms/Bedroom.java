@@ -26,6 +26,41 @@ public class BedRoom extends Room {
 
 	private JLabel tubeLightLbl;
 
+	public BedRoom() {
+		
+	}
+
+	Thread t = new Thread(){
+		public void run() {
+			while (true) {
+				double tempUnit = 0;
+				try {
+					//System.out.println("inside start");
+					Thread.sleep(1000);
+					if (getFan() != null && getTubeLight() != null) {
+						tempUnit = (getFan().getTotalTime() / 6)
+								* (getFan().getWatts() / 10);
+						setUnits((getUnits() + tempUnit));
+						//System.out.println("Within"+getUnits()+"ggg"+getFan().getTotalTime());
+						tempUnit = (getTubeLight().getTotalTime() / 6)
+								* (getTubeLight().getWatts() / 10);
+						setUnits((getUnits() + tempUnit));
+					}
+					if(getBulb() != null){
+						 tempUnit = (getBulb().getTotalTime()/6) * (getBulb().getWatts()/10);
+						setUnits((getUnits()+tempUnit));
+						//System.out.println("Unit "+getBulb().getTotalTime());
+						}
+
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	};
+	
+
 	public JLabel getTubeLightLbl() {
 		return tubeLightLbl;
 	}
@@ -82,9 +117,14 @@ public class BedRoom extends Room {
 		this.fanLbl = fanLbl;
 	}
 
-	public void init(JPanel showRoomPanel){
+	public void init(JPanel showRoomPanel) {
 		super.init(showRoomPanel);
-		if (getFan() != null && getFan().getState() == Constants.ON) {
+		
+		if(getFan() == null && getBulb() != null && getTubeLight() == null){
+			t.start();
+			//System.out.println("BR started");
+		}
+		if (getFan() != null && getFan().getDeviceState() == Constants.ON) {
 			setFanLbl(new JLabel(Constants.ON));
 			getFanBtn().setActionCommand(Constants.FAN);
 			getFanLbl().setForeground(Color.RED);
@@ -92,13 +132,17 @@ public class BedRoom extends Room {
 			showRoomPanel.add(getFanLbl());
 		} else {
 			setFan(new Fan());
+			//System.out.println("before start");
+			//System.out.println("after start");
 			setFanLbl(new JLabel(Constants.OFF));
 			getFanBtn().setActionCommand(Constants.FAN);
 			getFanLbl().setForeground(Color.GREEN);
 			showRoomPanel.add(getFanBtn());
 			showRoomPanel.add(getFanLbl());
+			
 		}
-		if (getTubeLight() != null && getTubeLight().getState() == Constants.ON) {
+		if (getTubeLight() != null
+				&& getTubeLight().getDeviceState() == Constants.ON) {
 			setTubeLightLbl(new JLabel(Constants.ON));
 			getTubeLightBtn().setActionCommand(Constants.TUBE_LIGHT);
 			getTubeLightLbl().setForeground(Color.RED);
@@ -113,6 +157,7 @@ public class BedRoom extends Room {
 			showRoomPanel.add(getTubeLightLbl());
 		}
 	}
+
 	private class BtnClickedActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {

@@ -74,7 +74,7 @@ public class Device extends Thread{
 				Thread.sleep(1000);
 				totalTime++;
 				setTotalTime(totalTime);
-				//System.out.println(totalTime);
+				System.out.println(totalTime);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

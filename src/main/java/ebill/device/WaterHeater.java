@@ -3,6 +3,11 @@ package ebill.device;
 import java.util.Timer;
 
 public class WaterHeater extends Device{
+	public WaterHeater() {
+		super(150);
+		// TODO Auto-generated constructor stub
+	}
+
 	private long duration;
 
 	public long getDuration() {
