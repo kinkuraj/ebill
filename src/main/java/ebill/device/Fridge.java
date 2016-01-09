@@ -4,6 +4,11 @@ import java.util.Timer;
 
 public class Fridge extends Device{
 
+	public Fridge() {
+		super(150);
+		// TODO Auto-generated constructor stub
+	}
+
 	private long duration;
 
 	public long getDuration() {

@@ -3,6 +3,11 @@ package ebill.device;
 import java.util.Timer;
 
 public class Mixie extends Device{
+	public Mixie() {
+		super(80);
+		// TODO Auto-generated constructor stub
+	}
+
 	private long duration;
 
 	public long getDuration() {

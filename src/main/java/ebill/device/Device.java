@@ -3,7 +3,8 @@
  */
 package ebill.device;
 
-import java.sql.Time;
+import ebill.util.Constants;
+
 
 
 
@@ -11,11 +12,11 @@ import java.sql.Time;
  * @author Kinku
  *
  */
-public class Device {
+public class Device extends Thread{
 
-	private String state;
+	private String deviceState;
 	
-	private String watts;
+	private long watts;
 	
 	private long startTime;
 	
@@ -23,7 +24,9 @@ public class Device {
 	
 	private long totalTime;
 	
-	
+	public Device(long watts){
+		this.watts=watts;		
+	}
 
 	public long getStartTime() {
 		return startTime;
@@ -49,21 +52,37 @@ public class Device {
 		this.totalTime = totalTime;
 	}
 
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getWatts() {
+	public long getWatts() {
 		return watts;
 	}
 
-	public void setWatts(String watts) {
+	public void setWatts(long watts) {
 		this.watts = watts;
 	}
 
-	
+	 public String getDeviceState() {
+		return deviceState;
+	}
+
+	public void setDeviceState(String deviceState) {
+		this.deviceState = deviceState;
+	}
+
+	public void run() {
+		 while(deviceState.equalsIgnoreCase(Constants.ON)){
+			 try {
+				Thread.sleep(1000);
+				totalTime++;
+				setTotalTime(totalTime);
+				//System.out.println(totalTime);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 if(deviceState.equalsIgnoreCase(Constants.OFF)){
+				 totalTime = 0;
+				 
+			 }
+		 }
+	 }
 }

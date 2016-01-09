@@ -17,7 +17,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
 
 import ebill.rooms.BedRoom;
@@ -26,6 +28,7 @@ import ebill.rooms.Kitchen;
 import ebill.rooms.Room;
 import ebill.rooms.StudyRoom;
 import ebill.rooms.Toilet;
+import ebill.util.Tariff;
 
 public class Home {
 
@@ -64,6 +67,8 @@ public class Home {
 	private StudyRoom studyRoom;
 
 	JSplitPane showSplitPane;
+
+	JPanel billPanel;
 
 	JPanel showRoomPanel;
 
@@ -206,6 +211,11 @@ public class Home {
 	}
 
 	public Home() {
+		bedRoom = new BedRoom();
+		hall = new Hall();
+		kitchen = new Kitchen();
+		washRoom = new Toilet();
+		studyRoom = new StudyRoom();
 		prepareGUI();
 	}
 
@@ -230,12 +240,20 @@ public class Home {
 		picLblPanel = new JPanel();
 		picLblPanel.setMinimumSize(new Dimension(300, 200));
 		picLblPanel.setLayout(new GridLayout(1, 0));
-		picLblPanel.setBackground(Color.RED);
 		showRoomPanel = new JPanel();
 		showRoomPanel.setMinimumSize(new Dimension(200, 200));
 		showSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, picLblPanel,
 				showRoomPanel);
-
+		JButton gBillBtn = new JButton("Get Bill");
+		gBillBtn.setActionCommand("Bill");
+		gBillBtn.addActionListener(new ButtonClickListener());
+		picLblPanel.add(gBillBtn);
+		
+		JButton getReport = new JButton("Generate Report");
+		getReport.setActionCommand("Report");
+		getReport.addActionListener(new ButtonClickListener());
+		picLblPanel.add(getReport);
+		
 		showSplitPane.setOneTouchExpandable(true);
 		showPanel.add(showSplitPane);
 		mainFrame.addWindowListener(new WindowAdapter() {
@@ -243,12 +261,6 @@ public class Home {
 				System.exit(0);
 			}
 		});
-
-		bedRoom = new BedRoom();
-		hall = new Hall();
-		kitchen = new Kitchen();
-		washRoom = new Toilet();
-		studyRoom = new StudyRoom();
 
 		mainFrame.add(splitPane);
 		mainFrame.setVisible(true);
@@ -325,9 +337,9 @@ public class Home {
 				showRoomPanel.removeAll();
 				showRoomPanel.repaint();
 				showRoomPanel.revalidate();
-				
+
 				bedRoom.init(showRoomPanel);
-				
+
 			} else if (command.equals("HL")) {
 				picLbl.setIcon(new ImageIcon(hallImg));
 				picTxt.setText("Living Room");
@@ -357,7 +369,19 @@ public class Home {
 				showRoomPanel.repaint();
 				showRoomPanel.revalidate();
 				washRoom.init(showRoomPanel);
+			} else if (command.equals("Bill")) {
+				double totalCons = getBedRoom().getUnits()+getHall().getUnits()+getKitchen().getUnits()+getWashRoom().getUnits()+getStudyRoom().getUnits();
+				String message = "My Home: \n Total consumption : "+totalCons+"units\nTotal cost : Rs. "+Tariff.getBill(totalCons)+"/-";
+				JOptionPane.showMessageDialog(mainFrame, message, "Consumption Bill",JOptionPane.INFORMATION_MESSAGE);
+
+			}
+			else if (command.equals("Report")) {
+				String message = "Bed Room:\n Total consumption : "+getBedRoom().getUnits()+" units \nTotal cost : Rs. "+Tariff.getBill(getBedRoom().getUnits())+"/- \nHall:\n Total consumption : "+getHall().getUnits()+" units \nTotal cost : Rs. "+Tariff.getBill(getHall().getUnits())+"/- \nKitchen:\n Total consumption : "+getKitchen().getUnits()+" units \nTotal cost : Rs. "+Tariff.getBill(getKitchen().getUnits())+"/-\nWash Room:\n Total consumption : "+getWashRoom().getUnits()+" units \nTotal cost : Rs. "+Tariff.getBill(getWashRoom().getUnits())+"/-\nStudy Room:\n Total consumption : "+getStudyRoom().getUnits()+" units \nTotal cost : Rs. "+Tariff.getBill(getStudyRoom().getUnits())+"/-";
+				JOptionPane.showMessageDialog(mainFrame, message, "Consumption Report",JOptionPane.INFORMATION_MESSAGE);
+
 			}
 		}
 	}
+	
+	
 }
